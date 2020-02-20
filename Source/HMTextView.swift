@@ -17,7 +17,7 @@ open class HMTextView: UITextView {
     
     // Configuration Parameters
     /**
-     Updates the hashtag font.
+     Main regex for detecting hashtag and mention. You Can update this with your own
     
      ### Default: ###
      ````
