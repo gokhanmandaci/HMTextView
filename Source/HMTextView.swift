@@ -8,24 +8,58 @@
 
 import UIKit
 
-open class HMTextView: UITextView {
+/**
+ With this protocol you can get the links (@, #).
+ */
+public protocol HMTextViewProtocol {
+    func links(_ links: HMLinks)
+    func clicked(on link: String, type: HMType)
+}
+
+/// Delegate HMTextView protocol.
+public var hmTextViewDelegate: HMTextViewProtocol?
+
+public enum HMType {
+    case hashtag
+    case mention
+}
+
+public class HMTextView: UITextView {
     // MARK: - Parameters
-    private enum HMType {
-        case hashtag
-        case mention
-    }
+    private let hashtagRoot: String = "hash:"
+    private let mentionRoot: String = "mention:"
     
     // Configuration Parameters
     /**
-     Main regex for detecting hashtag and mention. You Can update this with your own
-    
-     ### Default: ###
-     ````
-    UIFont.boldSystemFont(ofSize: 17)
-     ````
-    */
+      Main regex for detecting hashtag and mention. You Can update this with your own
+     
+      ### Default: ###
+      ````
+     UIFont.boldSystemFont(ofSize: 17)
+      ````
+     */
     public var regex = "(?<=\\s|^)([@#][\\p{L}\\d]+[._]\\p{L}+|[#@][\\p{L}\\d]*)(?=[']\\p{L}+|[.,;:?!](?:\\s|$)|\\s|$)"
 //    public var regex = "(?<=\\s|^)([#@]\\d*\\p{L}+\\d*[_-][\\p{L}\\d]+|[#@]\\d*\\p{L}+\\d*)(?=[']\\p{L}+|[.,;:?!]|\\s|$)"
+    
+    /**
+      Enable detecting hashtags.
+     
+      ### Default: ###
+      ````
+     true
+      ````
+     */
+    public var detectHashtags: Bool = true
+    
+    /**
+      Enable detecting mentions.
+     
+      ### Default: ###
+      ````
+     true
+      ````
+     */
+    public var detectMentions: Bool = true
     
     /**
       Updates the hashtag font.
@@ -64,13 +98,13 @@ open class HMTextView: UITextView {
     ]
     
     /**
-     Update link attributes.
-    
-     ### Default: ###
-     ````
-    System default link colors and attributes
-     ````
-    */
+      Update link attributes.
+     
+      ### Default: ###
+      ````
+     System default link colors and attributes
+      ````
+     */
     public var linkAttributes: [NSAttributedString.Key: Any]! {
         didSet {
             self.linkTextAttributes = self.linkAttributes
@@ -124,12 +158,11 @@ extension HMTextView {
             if word.count < 3 {
                 continue
             }
-            // Hashtag Part
-            if word.hasPrefix("#"), let hm = getHM(word) {
-                attrString.addAttribute(.link, value: "hash:\(hm.0)", range: hm.1)
+            if word.hasPrefix("#"), let hm = getHM(word), detectHashtags {
+                attrString.addAttribute(.link, value: "\(self.hashtagRoot)\(hm.0)", range: hm.1)
                 attrString.addAttribute(.font, value: self.hashtagFont, range: hm.1)
-            } else if word.hasPrefix("@"), let hm = getHM(word) {
-                attrString.addAttribute(.link, value: "mention:\(hm.0)", range: hm.1)
+            } else if word.hasPrefix("@"), let hm = getHM(word), detectMentions {
+                attrString.addAttribute(.link, value: "\(self.mentionRoot)\(hm.0)", range: hm.1)
                 attrString.addAttribute(.font, value: self.mentionFont, range: hm.1)
             }
         }
@@ -149,10 +182,121 @@ extension HMTextView {
         }
         return nil
     }
+    
+    /**
+     Fills an HMLinks object and returns it. Contains hashtag and mention texts.
+     */
+    private func getLinks() -> HMLinks {
+        var links = HMLinks()
+        
+        let words = self.getMatched(words: self.text, for: self.regex)
+        for word in words {
+            if word.count < 3 {
+                continue
+            }
+            if word.hasPrefix("#"), self.detectHashtags {
+                links.hashtags.append(String(word.dropFirst()))
+            } else if word.hasPrefix("@"), self.detectMentions {
+                links.mentions.append(String(word.dropFirst()))
+            }
+        }
+        
+        return links
+    }
+    
+    private func getCursorPosition(_ range: UITextRange) -> Int? {
+        let cursorPosition = self.offset(from: self.beginningOfDocument, to: range.start)
+        return cursorPosition
+    }
 }
 
-extension HMTextView: UITextViewDelegate {
-    public func textViewDidChange(_ textView: UITextView) {
+// MARK: - Public Functions
+extension HMTextView {
+    public func addLink(_ link: String, type: HMType) {
+        var prefix = "@"
+        if type == .hashtag {
+            prefix = "#"
+        }
+        let attrStr = self.attributedText.string
+        if let textRange = self.selectedTextRange,
+            let cursorPosition = getCursorPosition(textRange) {
+            let cursorMinusOne = cursorPosition - 1
+            let cursorPlusOne = cursorPosition + 1
+            if attrStr.isEmpty {
+                self.replace(textRange, withText: "\(prefix)\(link) ")
+            } else {
+                if attrStr.count > cursorPosition {
+                    // Get chars before and after if there is any.
+                    var beforeChar = ""
+                    var afterChar = ""
+                    if cursorMinusOne > 0, attrStr.count > cursorMinusOne {
+                        beforeChar = String(attrStr[cursorMinusOne])
+                    }
+                    if attrStr.count > cursorPlusOne {
+                        afterChar = String(attrStr[cursorPlusOne])
+                    }
+                    
+                    // Check if before and after chars are spaces
+                    var mentionUpdated = "\(prefix)\(link)"
+                    if beforeChar != " " {
+                        mentionUpdated = " " + mentionUpdated
+                    } else if beforeChar == prefix {
+                        mentionUpdated = "\(link)"
+                    }
+                    if afterChar != " " {
+                        mentionUpdated = mentionUpdated + " "
+                    }
+                    
+                    self.replace(textRange, withText: mentionUpdated)
+                } else {
+                    self.replace(textRange, withText: " \(prefix)\(link)")
+                }
+            }
+        } else {
+            self.attributedText = NSAttributedString(string: attrStr.trimmingCharacters(in: .whitespaces) + " \(prefix)\(link)")
+        }
         self.detectLinks()
     }
+}
+
+// MARK: - TextView Delegate
+extension HMTextView: UITextViewDelegate {
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        self.detectLinks()
+        
+        return true
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        hmTextViewDelegate?.links(self.getLinks())
+    }
+    
+    public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        let clickedItem = URL.absoluteString
+        if clickedItem.contains(self.hashtagRoot) {
+            let linkString = clickedItem.replacingOccurrences(of: self.hashtagRoot, with: "")
+            hmTextViewDelegate?.clicked(on: linkString, type: .hashtag)
+        } else if clickedItem.contains(self.mentionRoot) {
+            let linkString = clickedItem.replacingOccurrences(of: self.mentionRoot, with: "")
+            hmTextViewDelegate?.clicked(on: linkString, type: .mention)
+        }
+        return false
+    }
+}
+
+extension StringProtocol {
+    subscript(offset: Int) -> Character { self[index(startIndex, offsetBy: offset)] }
+    subscript(range: Range<Int>) -> SubSequence {
+        let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
+        return self[startIndex..<index(startIndex, offsetBy: range.count)]
+    }
+    
+    subscript(range: ClosedRange<Int>) -> SubSequence {
+        let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
+        return self[startIndex..<index(startIndex, offsetBy: range.count)]
+    }
+    
+    subscript(range: PartialRangeFrom<Int>) -> SubSequence { self[index(startIndex, offsetBy: range.lowerBound)...] }
+    subscript(range: PartialRangeThrough<Int>) -> SubSequence { self[...index(startIndex, offsetBy: range.upperBound)] }
+    subscript(range: PartialRangeUpTo<Int>) -> SubSequence { self[..<index(startIndex, offsetBy: range.upperBound)] }
 }

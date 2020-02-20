@@ -38,11 +38,31 @@ pod 'HMTextView'
 
 In your view controller after creating a HMTextView, for example called `hmTextView`
 
+### Protocols
+
+```
+extension ViewController: HMTextViewProtocol {
+    func clicked(on link: String, type: HMType) {
+        if type == .hashtag {
+            print("HMTextView clicked on: \(link) of type Hashtag")
+        } else {
+            print("HMTextView clicked on: \(link) of type Mention")
+        }
+    }
+    
+    func links(_ links: HMLinks) {
+        print("HMTextView returned links: \(links)")
+    }
+}
+```
+
 ### Configuration
 
 ```
 override func viewDidLoad() {
     super.viewDidLoad()
+    
+    hmTextViewDelegate = self
     
     hmTextView.textAttributes = [
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -61,6 +81,12 @@ override func viewDidLoad() {
 ```
 /// Main regex for detecting hashtag and mention. You Can update this with your own.<br/>
 public var regex = "(?<=\\s|^)([@#][\\p{L}\\d]+[._]\\p{L}+|[#@][\\p{L}\\d]*)(?=[']\\p{L}+|[.,;:?!](?:\\s|$)|\\s|$)"
+
+/// Turn this to false if you don't want to highlight hashtags.
+public var detectHashtags: Bool = true
+
+/// Turn this to false if you don't want to highlight mentions.
+public var detectMentions: Bool = true
 
 /// Updates the hashtag font.<br/>
 public var hashtagFont: UIFont = UIFont.boldSystemFont(ofSize: 17)
@@ -85,6 +111,7 @@ public var linkAttributes: [NSAttributedString.Key: Any]! {
 ## Resources Used: <br/>
 https://www.hackingwithswift.com/articles/108/how-to-use-regular-expressions-in-swift <br/>
 https://stackoverflow.com/a/48938881 <br/>
+https://stackoverflow.com/a/24144365 <br/>
 
 ## Author
 

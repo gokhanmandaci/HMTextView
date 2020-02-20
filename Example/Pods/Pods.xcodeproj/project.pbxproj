@@ -10,6 +10,7 @@
 		1DBC6A03C4FF31691152BD4CC413064D /* HMTextView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B21AD00F6BDBBC9E582FCE8C391A1ABA /* HMTextView-dummy.m */; };
 		6CF3A93167701DB8C0E880C8163B4D13 /* Pods-HMTextView_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BC771BAB5659507D59D9B30B43991209 /* Pods-HMTextView_Tests-dummy.m */; };
 		76BA8E5323FEAB9C00BE7E2E /* HMTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BA8E5223FEAB9C00BE7E2E /* HMTextView.swift */; };
+		76BA8E5523FEBF6A00BE7E2E /* HMLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BA8E5423FEBF6A00BE7E2E /* HMLinks.swift */; };
 		96218A56E9A1ECFCDF433AB78F5FADD4 /* Pods-HMTextView_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E62675231131536AEA893212F1D00D0A /* Pods-HMTextView_Example-dummy.m */; };
 		BACDAFCA4BD7241A8EE5D7286EBCED3F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		C73FE1835E02FA8BFCBDAD62A1A5E6DA /* HMTextView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EA002B79101075691DDE2E1306F2109 /* HMTextView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -46,6 +47,7 @@
 		4EA002B79101075691DDE2E1306F2109 /* HMTextView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "HMTextView-umbrella.h"; sourceTree = "<group>"; };
 		6C55136C2B48F5D43263F38E98A62AA2 /* Pods-HMTextView_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-HMTextView_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		76BA8E5223FEAB9C00BE7E2E /* HMTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMTextView.swift; sourceTree = "<group>"; };
+		76BA8E5423FEBF6A00BE7E2E /* HMLinks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HMLinks.swift; sourceTree = "<group>"; };
 		8A37AEF39FD9616D742319F1CD2043A8 /* Pods-HMTextView_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-HMTextView_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		8D235FBC983174130A7011EF284D7EA4 /* Pods-HMTextView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-HMTextView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		92EE037B65E751C957FED3DEE0CB0590 /* Pods-HMTextView_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-HMTextView_Tests.modulemap"; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				76BA8E5223FEAB9C00BE7E2E /* HMTextView.swift */,
+				76BA8E5423FEBF6A00BE7E2E /* HMLinks.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -403,6 +406,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76BA8E5523FEBF6A00BE7E2E /* HMLinks.swift in Sources */,
 				76BA8E5323FEAB9C00BE7E2E /* HMTextView.swift in Sources */,
 				1DBC6A03C4FF31691152BD4CC413064D /* HMTextView-dummy.m in Sources */,
 			);

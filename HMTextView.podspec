@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'HMTextView'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'HMTextView is a configurable textview which can detect and link @ and #.'
 
 # This description is used to generate tags and improve search results.
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-'HMTextView is a configurable textview which can detect and link @ and #. You can just set your class to HMTextView and start using it with default values. Also you can udpate text attributes, link text attributes and link fonts.'
+'HMTextView is a configurable textview which can detect and link @ and #. You can just set your class to HMTextView and start using it with default values. Also you can udpate text attributes, link text attributes and link fonts. You can add hashtag or mentions by selection from anywhere. Protocol functions will return you the hashtags and mentions you entered at the end.'
                        DESC
 
   s.homepage         = 'https://github.com/gokhanmandaci/HMTextView'
