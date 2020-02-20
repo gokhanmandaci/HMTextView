@@ -7,18 +7,24 @@
 //
 
 import UIKit
+import HMTextView
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var hmTextView: HMTextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        hmTextView.textAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)
+        ]
+        hmTextView.linkAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.red
+        ]
+        hmTextView.hashtagFont = UIFont.boldSystemFont(ofSize: 20)
+        hmTextView.mentionFont = UIFont.boldSystemFont(ofSize: 12)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
