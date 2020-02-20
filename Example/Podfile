@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'HMTextView_Example' do
+  pod 'HMTextView', :path => '../'
+
+  target 'HMTextView_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
