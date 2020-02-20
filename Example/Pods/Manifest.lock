@@ -1,0 +1,16 @@
+PODS:
+  - HMTextView (0.1.0)
+
+DEPENDENCIES:
+  - HMTextView (from `../`)
+
+EXTERNAL SOURCES:
+  HMTextView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  HMTextView: 496d8f99805fb89be3b82a5b61c95aac518e489d
+
+PODFILE CHECKSUM: 2d28eee5835698a0fbdd18ddb6b52b66375680da
+
+COCOAPODS: 1.9.0.beta.2

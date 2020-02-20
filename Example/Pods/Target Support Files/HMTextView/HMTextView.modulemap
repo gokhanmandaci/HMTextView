@@ -1,0 +1,6 @@
+framework module HMTextView {
+  umbrella header "HMTextView-umbrella.h"
+
+  export *
+  module * { export * }
+}
