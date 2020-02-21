@@ -17,6 +17,7 @@ public protocol HMTextViewProtocol {
     func shouldBeginEditing(_ textView: UITextView)
     func didEndEditing(_ textView: UITextView)
     func didChange(_ textView: UITextView)
+    func readyToEnter(link_with type: HMType)
 }
 
 public extension HMTextViewProtocol {
@@ -25,6 +26,7 @@ public extension HMTextViewProtocol {
     func shouldBeginEditing(_ textView: UITextView) {}
     func didEndEditing(_ textView: UITextView) {}
     func didChange(_ textView: UITextView) {}
+    func readyToEnter(link_with type: HMType) {}
 }
 
 /// Delegate HMTextView protocol.
@@ -179,6 +181,7 @@ extension HMTextView {
             if word.count < 3 {
                 continue
             }
+            
             if word.hasPrefix("#"), let hm = getHM(word), detectHashtags {
                 attrString.addAttribute(.link, value: "\(self.hashtagRoot)\(hm.0)", range: hm.1)
                 attrString.addAttribute(.font, value: self.hashtagFont, range: hm.1)
@@ -285,9 +288,17 @@ extension HMTextView: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         self.detectLinks()
         
-        if charCount != -1 {
+        if text.count > 0, text[0] == "@" {
+            hmTextViewDelegate?.readyToEnter(link_with: .mention)
+        }
+        
+        if text.count > 0, text[0] == "#" {
+            hmTextViewDelegate?.readyToEnter(link_with: .hashtag)
+        }
+        
+        if self.charCount != -1 {
             let newLength = self.text.count + text.count - range.length
-            return newLength <= charCount
+            return newLength <= self.charCount
         }
         
         return true

@@ -70,4 +70,12 @@ extension ViewController: HMTextViewProtocol {
     func links(_ links: HMLinks) {
         print("HMTextView returned links: \(links)")
     }
+    
+    func readyToEnter(link_with type: HMType) {
+        if type == .hashtag {
+            print("Ready to enter hashtag")
+        } else {
+            print("Ready to enter mention")
+        }
+    }
 }
