@@ -58,7 +58,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: HMTextViewProtocol {
+extension ViewController: HMTextViewProtocol {    
     func clicked(on link: String, type: HMType) {
         if type == .hashtag {
             print("HMTextView clicked on: \(link) of type Hashtag")

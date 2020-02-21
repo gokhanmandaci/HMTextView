@@ -14,6 +14,17 @@ import UIKit
 public protocol HMTextViewProtocol {
     func links(_ links: HMLinks)
     func clicked(on link: String, type: HMType)
+    func shouldBeginEditing(_ textView: UITextView)
+    func didEndEditing(_ textView: UITextView)
+    func didChange(_ textView: UITextView)
+}
+
+public extension HMTextViewProtocol {
+    func links(_ links: HMLinks) {}
+    func clicked(on link: String, type: HMType) {}
+    func shouldBeginEditing(_ textView: UITextView) {}
+    func didEndEditing(_ textView: UITextView) {}
+    func didChange(_ textView: UITextView) {}
 }
 
 /// Delegate HMTextView protocol.
@@ -110,6 +121,16 @@ public class HMTextView: UITextView {
             self.linkTextAttributes = self.linkAttributes
         }
     }
+    
+    /**
+      Character count.
+     
+      ### Default: ###
+      ````
+     none
+      ````
+     */
+    public var charCount: Int = -1
     
     // MARK: - Initializers
     override init(frame: CGRect, textContainer: NSTextContainer?) {
@@ -264,11 +285,21 @@ extension HMTextView: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         self.detectLinks()
         
+        if charCount != -1 {
+            let newLength = self.text.count + text.count - range.length
+            return newLength <= charCount
+        }
+        
         return true
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {
         hmTextViewDelegate?.links(self.getLinks())
+        hmTextViewDelegate?.didEndEditing(textView)
+    }
+    
+    public func textViewDidChange(_ textView: UITextView) {
+        hmTextViewDelegate?.didChange(textView)
     }
     
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
@@ -281,6 +312,12 @@ extension HMTextView: UITextViewDelegate {
             hmTextViewDelegate?.clicked(on: linkString, type: .mention)
         }
         return false
+    }
+    
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        hmTextViewDelegate?.shouldBeginEditing(textView)
+        
+        return true
     }
 }
 
