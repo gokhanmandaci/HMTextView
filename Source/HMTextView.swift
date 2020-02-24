@@ -41,6 +41,7 @@ public class HMTextView: UITextView {
     // MARK: - Parameters
     private let hashtagRoot: String = "hash:"
     private let mentionRoot: String = "mention:"
+    private let isDeleting: Bool = false
     
     // Configuration Parameters
     /**
@@ -193,11 +194,15 @@ extension HMTextView {
             }
             
             if word.hasPrefix("#"), let hm = getHM(word), detectHashtags {
-                attrString.addAttribute(.link, value: "\(self.hashtagRoot)\(hm.0)", range: hm.1)
-                attrString.addAttribute(.font, value: self.hashtagFont, range: hm.1)
+                for range in hm.1 {
+                    attrString.addAttribute(.link, value: "\(self.hashtagRoot)\(hm.0)", range: range)
+                    attrString.addAttribute(.font, value: self.hashtagFont, range: range)
+                }
             } else if word.hasPrefix("@"), let hm = getHM(word), detectMentions {
-                attrString.addAttribute(.link, value: "\(self.mentionRoot)\(hm.0)", range: hm.1)
-                attrString.addAttribute(.font, value: self.mentionFont, range: hm.1)
+                for range in hm.1 {
+                    attrString.addAttribute(.link, value: "\(self.mentionRoot)\(hm.0)", range: range)
+                    attrString.addAttribute(.font, value: self.mentionFont, range: range)
+                }
             }
         }
         let style = NSMutableParagraphStyle()
@@ -210,13 +215,17 @@ extension HMTextView {
     /**
      Returns word alone and the range in the text.
      */
-    private func getHM(_ word: String) -> (String.SubSequence, NSRange)? {
-        let nsString = NSString(string: self.text)
-        let range: NSRange = nsString.range(of: word as String)
+    private func getHM(_ word: String) -> (String.SubSequence, [NSRange])? {
+        let ranges = self.text.ranges(of: word)
+        var nsRanges = [NSRange]()
+        for range in ranges {
+            let nsRange = NSRange(range, in: self.text)
+            nsRanges.append(nsRange)
+        }
         let substring = word.dropFirst()
         if let firstChar = substring.unicodeScalars.first,
             !NSCharacterSet.decimalDigits.contains(firstChar) {
-            return (substring, range)
+            return (substring, nsRanges)
         }
         return nil
     }
@@ -325,8 +334,16 @@ extension HMTextView {
 // MARK: - TextView Delegate
 extension HMTextView: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        self.detectLinks()
-        
+        let newLength = self.text.count + text.count - range.length
+        if newLength < textView.text.count, text == "" {
+            print("backspace")
+        } else {
+            if let textRange = self.selectedTextRange, let position = getCursorPosition(textRange) {
+                if position >= textView.text.count {
+                    self.detectLinks()
+                }
+            }
+        }
         if text.count > 0, text[0] == "@" {
             hmTextViewDelegate?.readyToEnter(link_with: .mention)
         }
@@ -336,7 +353,6 @@ extension HMTextView: UITextViewDelegate {
         }
         
         if self.charCount != -1 {
-            let newLength = self.text.count + text.count - range.length
             return newLength <= self.charCount
         }
         
@@ -344,6 +360,7 @@ extension HMTextView: UITextViewDelegate {
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {
+        self.detectLinks()
         hmTextViewDelegate?.links(self.getLinks())
         hmTextViewDelegate?.didEndEditing(textView)
     }
@@ -386,4 +403,16 @@ extension StringProtocol {
     subscript(range: PartialRangeFrom<Int>) -> SubSequence { self[index(startIndex, offsetBy: range.lowerBound)...] }
     subscript(range: PartialRangeThrough<Int>) -> SubSequence { self[...index(startIndex, offsetBy: range.upperBound)] }
     subscript(range: PartialRangeUpTo<Int>) -> SubSequence { self[..<index(startIndex, offsetBy: range.upperBound)] }
+}
+
+extension String {
+    func ranges(of substring: String, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] {
+        var ranges: [Range<Index>] = []
+        while ranges.last.map({ $0.upperBound < self.endIndex }) ?? true,
+            let range = self.range(of: substring, options: options, range: (ranges.last?.upperBound ?? self.startIndex)..<self.endIndex, locale: locale)
+        {
+            ranges.append(range)
+        }
+        return ranges
+    }
 }
