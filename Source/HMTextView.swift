@@ -236,7 +236,8 @@ extension HMTextView {
 
 // MARK: - Public Functions
 extension HMTextView {
-    public func addLink(_ link: String, type: HMType) {
+    #warning("TODO: Needs refactoring")
+    public func addLink(_ link: String, type: HMType, withReplacing: Bool = false) {
         var prefix = "@"
         if type == .hashtag {
             prefix = "#"
@@ -271,8 +272,32 @@ extension HMTextView {
                         mentionUpdated = mentionUpdated + " "
                     }
                     
+                    if withReplacing {
+                        let regex = try! NSRegularExpression(pattern: "\\S+$")
+                        let textRange = NSRange(location: 0, length: selectedRange.location)
+                        if let range = regex.firstMatch(in: text, range: textRange)?.range {
+                            let nsString = NSString(string: attrStr)
+                            let str = nsString.replacingCharacters(in: range, with: "\(prefix)\(link)") as String
+                            self.attributedText = NSMutableAttributedString(string: str)
+                            self.detectLinks()
+                        }
+                        return
+                    }
+                    
                     self.replace(textRange, withText: mentionUpdated)
                 } else {
+                    if withReplacing {
+                        let regex = try! NSRegularExpression(pattern: "\\S+$")
+                        let textRange = NSRange(location: 0, length: cursorPosition)
+                        if let range = regex.firstMatch(in: text, range: textRange)?.range {
+                            let nsString = NSString(string: attrStr)
+                            let str = nsString.replacingCharacters(in: range, with: "\(prefix)\(link)") as String
+                            self.attributedText = NSMutableAttributedString(string: str)
+                            self.detectLinks()
+                        }
+                        return
+                    }
+                    
                     self.replace(textRange, withText: " \(prefix)\(link)")
                 }
             }

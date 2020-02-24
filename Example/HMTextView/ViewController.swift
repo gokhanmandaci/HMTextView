@@ -15,7 +15,15 @@ class ViewController: UIViewController {
     
     // MARK: - Outlets
     @IBOutlet weak var hmTextView: HMTextView!
-
+    
+    // MARK: - Action
+    @IBAction func gokhanAction(_ sender: Any) {
+        self.hmTextView.addLink("Gokhan", type: .hashtag, withReplacing: true)
+    }
+    @IBAction func cagriAction(_ sender: Any) {
+        self.hmTextView.addLink("Cagri", type: .mention)
+    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,22 +42,7 @@ class ViewController: UIViewController {
         ]
         hmTextView.hashtagFont = UIFont.boldSystemFont(ofSize: 20)
         hmTextView.mentionFont = UIFont.boldSystemFont(ofSize: 12)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 15.0) {
-            self.hmTextView.addLink("Gokhan", type: .hashtag)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 20.0) {
-            self.hmTextView.addLink("Gökhan", type: .mention)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 25.0) {
-            self.hmTextView.addLink("Cagri", type: .mention)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 30.0) {
-            self.hmTextView.addLink("Cagri", type: .hashtag)
-        }
+
     }
     
     /// Tap gesture recognizer action. Closes keyboard.
