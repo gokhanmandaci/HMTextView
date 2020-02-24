@@ -55,6 +55,16 @@ public class HMTextView: UITextView {
 //    public var regex = "(?<=\\s|^)([#@]\\d*\\p{L}+\\d*[_-][\\p{L}\\d]+|[#@]\\d*\\p{L}+\\d*)(?=[']\\p{L}+|[.,;:?!]|\\s|$)"
     
     /**
+      Line spacing of the paragraph style.
+     */
+    public var lineSpacing: CGFloat = 0
+    
+    /**
+      Letter spacing of the paragraph style.
+     */
+    public var kern: CGFloat = 0.0
+    
+    /**
       Enable detecting hashtags.
      
       ### Default: ###
@@ -190,6 +200,10 @@ extension HMTextView {
                 attrString.addAttribute(.font, value: self.mentionFont, range: hm.1)
             }
         }
+        let style = NSMutableParagraphStyle()
+        style.lineSpacing = lineSpacing
+        attrString.addAttribute(.kern, value: kern, range: NSRange(location: 0, length: attrString.string.count))
+        attrString.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attrString.string.count))
         self.attributedText = attrString
     }
     

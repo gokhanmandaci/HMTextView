@@ -33,6 +33,9 @@ class ViewController: UIViewController {
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.tapped(_:)))
         view.addGestureRecognizer(tapGesture)
         
+        hmTextView.lineSpacing = 15
+        hmTextView.kern = -0.59
+        
         hmTextView.textAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)
