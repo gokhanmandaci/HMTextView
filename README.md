@@ -41,19 +41,18 @@ In your view controller after creating a HMTextView, for example called `hmTextV
 ### Protocols
 
 ```
-extension ViewController: HMTextViewProtocol {
-    func clicked(on link: String, type: HMType) {
-        if type == .hashtag {
-            print("HMTextView clicked on: \(link) of type Hashtag")
-        } else {
-            print("HMTextView clicked on: \(link) of type Mention")
-        }
-    }
-    
-    func links(_ links: HMLinks) {
-        print("HMTextView returned links: \(links)")
-    }
-}
+/// Returns all links in the text view
+func links(hashtags: [String], mentions: [String])
+/// Click event of a link
+func clicked(on link: String, type: HMType)
+/// Same with text view protocol
+func shouldBeginEditing(_ textView: UITextView)
+/// Same with text view protocol
+func didEndEditing(_ textView: UITextView)
+/// Same with text view protocol
+func didChange(_ textView: UITextView)
+/// When enter a'#' or '@'
+func readyToEnter(link_with type: HMType)
 ```
 
 ### Configuration
@@ -81,6 +80,12 @@ override func viewDidLoad() {
 ```
 /// Main regex for detecting hashtag and mention. You Can update this with your own.<br/>
 public var regex = "(?<=\\s|^)([@#][\\p{L}\\d]+[._]\\p{L}+|[#@][\\p{L}\\d]*)(?=[']\\p{L}+|[.,;:?!](?:\\s|$)|\\s|$)"
+
+/// Line spacing of the paragraph style.
+public var lineSpacing: CGFloat = 0
+
+/// Letter spacing of the paragraph style.
+public var kern: CGFloat = 0.0
 
 /// Turn this to false if you don't want to highlight hashtags.
 public var detectHashtags: Bool = true

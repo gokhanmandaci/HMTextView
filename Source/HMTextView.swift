@@ -12,7 +12,7 @@ import UIKit
  With this protocol you can get the links (@, #).
  */
 public protocol HMTextViewProtocol {
-    func links(_ links: HMLinks)
+    func links(hashtags: [String], mentions: [String])
     func clicked(on link: String, type: HMType)
     func shouldBeginEditing(_ textView: UITextView)
     func didEndEditing(_ textView: UITextView)
@@ -21,7 +21,7 @@ public protocol HMTextViewProtocol {
 }
 
 public extension HMTextViewProtocol {
-    func links(_ links: HMLinks) {}
+    func links(hashtags: [String], mentions: [String]) {}
     func clicked(on link: String, type: HMType) {}
     func shouldBeginEditing(_ textView: UITextView) {}
     func didEndEditing(_ textView: UITextView) {}
@@ -56,12 +56,12 @@ public class HMTextView: UITextView {
 //    public var regex = "(?<=\\s|^)([#@]\\d*\\p{L}+\\d*[_-][\\p{L}\\d]+|[#@]\\d*\\p{L}+\\d*)(?=[']\\p{L}+|[.,;:?!]|\\s|$)"
     
     /**
-      Line spacing of the paragraph style.
+     Line spacing of the paragraph style.
      */
     public var lineSpacing: CGFloat = 0
     
     /**
-      Letter spacing of the paragraph style.
+     Letter spacing of the paragraph style.
      */
     public var kern: CGFloat = 0.0
     
@@ -206,8 +206,8 @@ extension HMTextView {
             }
         }
         let style = NSMutableParagraphStyle()
-        style.lineSpacing = lineSpacing
-        attrString.addAttribute(.kern, value: kern, range: NSRange(location: 0, length: attrString.string.count))
+        style.lineSpacing = self.lineSpacing
+        attrString.addAttribute(.kern, value: self.kern, range: NSRange(location: 0, length: attrString.string.count))
         attrString.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attrString.string.count))
         self.attributedText = attrString
     }
@@ -361,7 +361,8 @@ extension HMTextView: UITextViewDelegate {
     
     public func textViewDidEndEditing(_ textView: UITextView) {
         self.detectLinks()
-        hmTextViewDelegate?.links(self.getLinks())
+        let links = self.getLinks()
+        hmTextViewDelegate?.links(hashtags: links.hashtags, mentions: links.mentions)
         hmTextViewDelegate?.didEndEditing(textView)
     }
     
@@ -386,6 +387,16 @@ extension HMTextView: UITextViewDelegate {
         
         return true
     }
+    
+    /// Returns hashtags in the text view
+    public func getHashtags() -> [String] {
+        return getLinks().hashtags
+    }
+    
+    /// Returns mentions in the text view
+    public func getMentions() -> [String] {
+        return getLinks().mentions
+    }
 }
 
 extension StringProtocol {
@@ -409,8 +420,7 @@ extension String {
     func ranges(of substring: String, options: CompareOptions = [], locale: Locale? = nil) -> [Range<Index>] {
         var ranges: [Range<Index>] = []
         while ranges.last.map({ $0.upperBound < self.endIndex }) ?? true,
-            let range = self.range(of: substring, options: options, range: (ranges.last?.upperBound ?? self.startIndex)..<self.endIndex, locale: locale)
-        {
+            let range = self.range(of: substring, options: options, range: (ranges.last?.upperBound ?? self.startIndex)..<self.endIndex, locale: locale) {
             ranges.append(range)
         }
         return ranges

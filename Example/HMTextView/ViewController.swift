@@ -12,6 +12,8 @@ import HMTextView
 class ViewController: UIViewController {
     // MARK: - Parameters
     private var tapGesture: UITapGestureRecognizer!
+    private var hashtags = [String]()
+    private var mentions = [String]()
     
     // MARK: - Outlets
     @IBOutlet weak var hmTextView: HMTextView!
@@ -63,8 +65,15 @@ extension ViewController: HMTextViewProtocol {
         }
     }
     
-    func links(_ links: HMLinks) {
-        print("HMTextView returned links: \(links)")
+    func links(hashtags: [String], mentions: [String]) {
+        print("HMTextView returned hashtags: \(hashtags)")
+        print("HMTextView returned mentions: \(mentions)")
+        
+        self.hashtags = hashtags
+        self.mentions = mentions
+        
+        print("Self Hashtags: \(self.hashtags)")
+        print("Self Mentions: \(self.mentions)")
     }
     
     func readyToEnter(link_with type: HMType) {
