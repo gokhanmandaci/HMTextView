@@ -18,6 +18,10 @@ public protocol HMTextViewProtocol {
     func didEndEditing(_ textView: UITextView)
     func didChange(_ textView: UITextView)
     func readyToEnter(link_with type: HMType)
+    func stoppedEntering(link_with type: HMType)
+    func charLimitReached()
+    func charLimitAvailable()
+    func chars(_ written: Int, _ remained: Int)
 }
 
 public extension HMTextViewProtocol {
@@ -27,6 +31,10 @@ public extension HMTextViewProtocol {
     func didEndEditing(_ textView: UITextView) {}
     func didChange(_ textView: UITextView) {}
     func readyToEnter(link_with type: HMType) {}
+    func stoppedEntering(link_with type: HMType) {}
+    func charLimitReached() {}
+    func charLimitAvailable() {}
+    func chars(_ written: Int, _ remained: Int) {}
 }
 
 /// Delegate HMTextView protocol.
@@ -334,9 +342,11 @@ extension HMTextView {
 // MARK: - TextView Delegate
 extension HMTextView: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        var isBackspace = false
         let newLength = self.text.count + text.count - range.length
         if newLength < textView.text.count, text == "" {
             print("backspace")
+            isBackspace = true
         } else {
             if let textRange = self.selectedTextRange, let position = getCursorPosition(textRange) {
                 if position >= textView.text.count {
@@ -344,16 +354,30 @@ extension HMTextView: UITextViewDelegate {
                 }
             }
         }
-        if text.count > 0, text[0] == "@" {
+        
+        if text.count > 0, text[0] == "@", text != "" {
             hmTextViewDelegate?.readyToEnter(link_with: .mention)
         }
         
-        if text.count > 0, text[0] == "#" {
+        if text.count > 0, text[0] == "#", text != "" {
             hmTextViewDelegate?.readyToEnter(link_with: .hashtag)
         }
         
+        if text == " " {
+            hmTextViewDelegate?.stoppedEntering(link_with: .hashtag)
+            hmTextViewDelegate?.stoppedEntering(link_with: .mention)
+        }
+        
         if self.charCount != -1 {
-            return newLength <= self.charCount
+            let writtenCharCount = textView.text.count
+            let remainedCharCount = self.charCount - newLength
+            hmTextViewDelegate?.chars(writtenCharCount, remainedCharCount)
+            if newLength <= self.charCount {
+                hmTextViewDelegate?.charLimitAvailable()
+            } else {
+                hmTextViewDelegate?.charLimitReached()
+            }
+            return (newLength <= self.charCount || isBackspace)
         }
         
         return true
@@ -424,5 +448,15 @@ extension String {
             ranges.append(range)
         }
         return ranges
+    }
+}
+
+extension StringProtocol {
+    var byWords: [SubSequence] {
+        var byWords: [SubSequence] = []
+        enumerateSubstrings(in: startIndex..., options: .byWords) { _, range, _, _ in
+            byWords.append(self[range])
+        }
+        return byWords
     }
 }

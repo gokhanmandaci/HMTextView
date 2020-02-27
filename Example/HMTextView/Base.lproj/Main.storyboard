@@ -37,8 +37,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6y-yp-ihE">
-                                <rect key="frame" x="293" y="220" width="46" height="30"/>
-                                <state key="normal" title="#Cagri"/>
+                                <rect key="frame" x="289" y="220" width="50" height="30"/>
+                                <state key="normal" title="@Cagri"/>
                                 <connections>
                                     <action selector="cagriAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="odJ-n7-ELq"/>
                                 </connections>

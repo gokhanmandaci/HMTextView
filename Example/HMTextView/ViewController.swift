@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     private var tapGesture: UITapGestureRecognizer!
     private var hashtags = [String]()
     private var mentions = [String]()
+    private var enableAddingMention: Bool = true
     
     // MARK: - Outlets
     @IBOutlet weak var hmTextView: HMTextView!
@@ -23,7 +24,9 @@ class ViewController: UIViewController {
         self.hmTextView.addLink("Gokhan", type: .hashtag, withReplacing: true)
     }
     @IBAction func cagriAction(_ sender: Any) {
-        self.hmTextView.addLink("Cagri", type: .mention)
+        if enableAddingMention {
+            self.hmTextView.addLink("Cagri", type: .mention)
+        }
     }
     
     // MARK: - Life Cycle
@@ -37,6 +40,8 @@ class ViewController: UIViewController {
         
         hmTextView.lineSpacing = 15
         hmTextView.kern = -0.59
+        
+        hmTextView.charCount = 160
         
         hmTextView.textAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -81,6 +86,26 @@ extension ViewController: HMTextViewProtocol {
             print("Ready to enter hashtag")
         } else {
             print("Ready to enter mention")
+        }
+    }
+    
+    func stoppedEntering(link_with type: HMType) {
+        if type == .hashtag {
+            print("Stopped entering hashtag")
+        } else {
+            print("Stopped entering mention")
+        }
+    }
+    
+    func chars(_ written: Int, _ remained: Int) {
+        print(remained)
+        print("******")
+        print(" @Cagri ".count)
+        if remained < " @Cagri ".count {
+            print("Char limit reached")
+            enableAddingMention = false
+        } else {
+            enableAddingMention = true
         }
     }
 }
