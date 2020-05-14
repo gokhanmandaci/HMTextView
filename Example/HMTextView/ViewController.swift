@@ -6,8 +6,8 @@
 //  Copyright (c) 2020 gokhanmandaci. All rights reserved.
 //
 
-import UIKit
 import HMTextView
+import UIKit
 
 class ViewController: UIViewController {
     // MARK: - Parameters
@@ -21,12 +21,23 @@ class ViewController: UIViewController {
     
     // MARK: - Action
     @IBAction func gokhanAction(_ sender: Any) {
-        self.hmTextView.addLink("Gokhan", type: .hashtag, withReplacing: true)
+        hmTextView.addLink("Gokhan", type: .hashtag, withReplacing: true)
     }
+    
     @IBAction func cagriAction(_ sender: Any) {
         if enableAddingMention {
-            self.hmTextView.addLink("Cagri", type: .mention)
+            hmTextView.addLink("Cagri", type: .mention)
         }
+    }
+    
+    @IBAction func addOneNumberAction(_ sender: Any) {
+        let time = "3"
+        hmTextView.addLink(time, type: .hashtag, withReplacing: false)
+    }
+    
+    @IBAction func addMultipleNumbersAction(_ sender: Any) {
+        let time = "123"
+        hmTextView.addLink(time, type: .hashtag, withReplacing: false)
     }
     
     // MARK: - Life Cycle
@@ -40,11 +51,12 @@ class ViewController: UIViewController {
         
         hmTextView.lineSpacing = 15
         hmTextView.kern = -0.59
-        
         hmTextView.charCount = 160
+        hmTextView.allowLinksStartWithNumber = true
+        hmTextView.minimumLinkCharCount = 1
         
         hmTextView.textAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.foregroundColor: UIColor.purple,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)
         ]
         hmTextView.linkAttributes = [
@@ -52,16 +64,15 @@ class ViewController: UIViewController {
         ]
         hmTextView.hashtagFont = UIFont.boldSystemFont(ofSize: 20)
         hmTextView.mentionFont = UIFont.boldSystemFont(ofSize: 12)
-
     }
     
     /// Tap gesture recognizer action. Closes keyboard.
     @objc private func tapped(_ gesture: UITapGestureRecognizer) {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
 }
 
-extension ViewController: HMTextViewProtocol {    
+extension ViewController: HMTextViewProtocol {
     func clicked(on link: String, type: HMType) {
         if type == .hashtag {
             print("HMTextView clicked on: \(link) of type Hashtag")
