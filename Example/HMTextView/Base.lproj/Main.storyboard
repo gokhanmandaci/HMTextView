@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,29 +29,47 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqz-3x-bDh">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqz-3x-bDh">
                                 <rect key="frame" x="36" y="220" width="62" height="30"/>
                                 <state key="normal" title="#Gokhan"/>
                                 <connections>
                                     <action selector="gokhanAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ZW6-Gz-uQ0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6y-yp-ihE">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfm-5B-IC1">
+                                <rect key="frame" x="36" y="296" width="35" height="30"/>
+                                <state key="normal" title="#123"/>
+                                <connections>
+                                    <action selector="addMultipleNumbersAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mXr-tb-OSr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6y-yp-ihE">
                                 <rect key="frame" x="289" y="220" width="50" height="30"/>
                                 <state key="normal" title="@Cagri"/>
                                 <connections>
                                     <action selector="cagriAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="odJ-n7-ELq"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgi-Ox-rAX">
+                                <rect key="frame" x="36" y="258" width="30" height="30"/>
+                                <state key="normal" title="#1"/>
+                                <connections>
+                                    <action selector="addOneNumberAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="JPZ-Xj-Mpm"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tqz-3x-bDh" firstAttribute="leading" secondItem="2rc-M0-TWx" secondAttribute="leading" id="3dn-uv-ZIC"/>
+                            <constraint firstItem="vgi-Ox-rAX" firstAttribute="top" secondItem="tqz-3x-bDh" secondAttribute="bottom" constant="8" id="5bT-WB-xDj"/>
                             <constraint firstItem="2rc-M0-TWx" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="20" id="EE2-me-uT0"/>
                             <constraint firstItem="d6y-yp-ihE" firstAttribute="top" secondItem="2rc-M0-TWx" secondAttribute="bottom" constant="30" id="IgD-HH-lXr"/>
                             <constraint firstItem="tqz-3x-bDh" firstAttribute="top" secondItem="2rc-M0-TWx" secondAttribute="bottom" constant="30" id="UHT-9D-6fY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="2rc-M0-TWx" secondAttribute="trailing" constant="20" id="Wbx-J2-9O0"/>
+                            <constraint firstItem="dfm-5B-IC1" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="20" id="Ylv-3B-fWF"/>
+                            <constraint firstItem="vgi-Ox-rAX" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="20" id="cDv-hs-qPM"/>
                             <constraint firstItem="d6y-yp-ihE" firstAttribute="trailing" secondItem="2rc-M0-TWx" secondAttribute="trailing" id="ln4-GN-AkI"/>
+                            <constraint firstItem="dfm-5B-IC1" firstAttribute="top" secondItem="vgi-Ox-rAX" secondAttribute="bottom" constant="8" id="pJn-t4-LcH"/>
                             <constraint firstItem="2rc-M0-TWx" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="40" id="qYa-VO-f9q"/>
                         </constraints>
                     </view>
@@ -61,7 +79,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138" y="133"/>
+            <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>
         </scene>
     </scenes>
 </document>

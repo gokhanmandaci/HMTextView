@@ -74,6 +74,16 @@ public class HMTextView: UITextView {
     public var kern: CGFloat = 0.0
     
     /**
+     If you want to prevent adding numbers in hashtags, make this parameter false.
+    */
+    public var allowLinksStartWithNumber: Bool = true
+    
+    /**
+     If you want to prevent adding numbers in hashtags, make this parameter false.
+    */
+    public var minimumLinkCharCount: Int = 3
+    
+    /**
       Enable detecting hashtags.
      
       ### Default: ###
@@ -197,7 +207,7 @@ extension HMTextView {
         
         let attrString = NSMutableAttributedString(string: self.text, attributes: self.textAttributes)
         for word in words {
-            if word.count < 3 {
+            if word.count < minimumLinkCharCount {
                 continue
             }
             
@@ -231,6 +241,9 @@ extension HMTextView {
             nsRanges.append(nsRange)
         }
         let substring = word.dropFirst()
+        if allowLinksStartWithNumber {
+            return (substring, nsRanges)
+        }
         if let firstChar = substring.unicodeScalars.first,
             !NSCharacterSet.decimalDigits.contains(firstChar) {
             return (substring, nsRanges)
@@ -246,7 +259,7 @@ extension HMTextView {
         
         let words = self.getMatched(words: self.text, for: self.regex)
         for word in words {
-            if word.count < 3 {
+            if word.count < minimumLinkCharCount {
                 continue
             }
             if word.hasPrefix("#"), self.detectHashtags {
