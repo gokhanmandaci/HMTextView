@@ -87,25 +87,31 @@ public var lineSpacing: CGFloat = 0
 /// Letter spacing of the paragraph style.
 public var kern: CGFloat = 0.0
 
+/// Allow links start with numbers.
+public var allowLinksStartWithNumber: Bool = false
+
+/// Set minimum character count for links.
+public var minimumLinkCharCount: Int = 3
+
 /// Turn this to false if you don't want to highlight hashtags.
 public var detectHashtags: Bool = true
 
 /// Turn this to false if you don't want to highlight mentions.
 public var detectMentions: Bool = true
 
-/// Updates the hashtag font.<br/>
+/// Updates the hashtag font.
 public var hashtagFont: UIFont = UIFont.boldSystemFont(ofSize: 17)
 
-/// Updates the mention font.<br/>
+/// Updates the mention font.
 public var mentionFont: UIFont = UIFont.boldSystemFont(ofSize: 17)
 
-/// Update general text attributes.<br/>
+/// Update general text attributes.
 public var textAttributes = [
     NSAttributedString.Key.foregroundColor: UIColor.black,
     NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)
 ]
 
-/// Update link attributes.<br/>
+/// Update link attributes.
 public var linkAttributes: [NSAttributedString.Key: Any]! {
     didSet {
         self.linkTextAttributes = self.linkAttributes
