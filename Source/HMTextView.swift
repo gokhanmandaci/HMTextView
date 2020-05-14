@@ -76,7 +76,7 @@ public class HMTextView: UITextView {
     /**
      If you want to prevent adding numbers in hashtags, make this parameter false.
     */
-    public var allowLinksStartWithNumber: Bool = true
+    public var allowLinksStartWithNumber: Bool = false
     
     /**
      If you want to prevent adding numbers in hashtags, make this parameter false.
