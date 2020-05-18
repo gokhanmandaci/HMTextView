@@ -16,25 +16,19 @@ public protocol HMTextViewProtocol {
     func clicked(on link: String, type: HMType)
     func shouldBeginEditing(_ textView: UITextView)
     func didEndEditing(_ textView: UITextView)
+    func didBeginEditing(_ textView: UITextView)
+    func didChangeSelection(_ textView: UITextView)
+    func shouldEndEditing(_ textView: UITextView)
     func didChange(_ textView: UITextView)
     func readyToEnter(link_with type: HMType)
     func stoppedEntering(link_with type: HMType)
     func charLimitReached()
     func charLimitAvailable()
     func chars(_ written: Int, _ remained: Int)
-}
-
-public extension HMTextViewProtocol {
-    func links(hashtags: [String], mentions: [String]) {}
-    func clicked(on link: String, type: HMType) {}
-    func shouldBeginEditing(_ textView: UITextView) {}
-    func didEndEditing(_ textView: UITextView) {}
-    func didChange(_ textView: UITextView) {}
-    func readyToEnter(link_with type: HMType) {}
-    func stoppedEntering(link_with type: HMType) {}
-    func charLimitReached() {}
-    func charLimitAvailable() {}
-    func chars(_ written: Int, _ remained: Int) {}
+    func shouldChangeTextIn(_ textView: UITextView,
+                            _ range: NSRange,
+                            _ replacementText: String,
+                            _ returning: Bool)
 }
 
 /// Delegate HMTextView protocol.
@@ -75,12 +69,12 @@ public class HMTextView: UITextView {
     
     /**
      If you want to prevent adding numbers in hashtags, make this parameter false.
-    */
+     */
     public var allowLinksStartWithNumber: Bool = false
     
     /**
      If you want to prevent adding numbers in hashtags, make this parameter false.
-    */
+     */
     public var minimumLinkCharCount: Int = 3
     
     /**
@@ -207,7 +201,7 @@ extension HMTextView {
         
         let attrString = NSMutableAttributedString(string: self.text, attributes: self.textAttributes)
         for word in words {
-            if word.count < minimumLinkCharCount {
+            if word.count < self.minimumLinkCharCount {
                 continue
             }
             
@@ -241,7 +235,7 @@ extension HMTextView {
             nsRanges.append(nsRange)
         }
         let substring = word.dropFirst()
-        if allowLinksStartWithNumber {
+        if self.allowLinksStartWithNumber {
             return (substring, nsRanges)
         }
         if let firstChar = substring.unicodeScalars.first,
@@ -259,7 +253,7 @@ extension HMTextView {
         
         let words = self.getMatched(words: self.text, for: self.regex)
         for word in words {
-            if word.count < minimumLinkCharCount {
+            if word.count < self.minimumLinkCharCount {
                 continue
             }
             if word.hasPrefix("#"), self.detectHashtags {
@@ -354,6 +348,20 @@ extension HMTextView {
 
 // MARK: - TextView Delegate
 extension HMTextView: UITextViewDelegate {
+    public func textViewDidBeginEditing(_ textView: UITextView) {
+        hmTextViewDelegate?.didBeginEditing(textView)
+    }
+    
+    public func textViewDidChangeSelection(_ textView: UITextView) {
+        hmTextViewDelegate?.didChange(textView)
+    }
+    
+    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        hmTextViewDelegate?.shouldEndEditing(textView)
+        
+        return true
+    }
+    
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         var isBackspace = false
         let newLength = self.text.count + text.count - range.length
@@ -390,9 +398,12 @@ extension HMTextView: UITextViewDelegate {
             } else {
                 hmTextViewDelegate?.charLimitReached()
             }
+            
+            hmTextViewDelegate?.shouldChangeTextIn(textView, range, text, (newLength <= self.charCount || isBackspace))
             return (newLength <= self.charCount || isBackspace)
         }
         
+        hmTextViewDelegate?.shouldChangeTextIn(textView, range, text, true)
         return true
     }
     
@@ -427,12 +438,12 @@ extension HMTextView: UITextViewDelegate {
     
     /// Returns hashtags in the text view
     public func getHashtags() -> [String] {
-        return getLinks().hashtags
+        return self.getLinks().hashtags
     }
     
     /// Returns mentions in the text view
     public func getMentions() -> [String] {
-        return getLinks().mentions
+        return self.getLinks().mentions
     }
 }
 

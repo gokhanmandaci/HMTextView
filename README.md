@@ -41,18 +41,40 @@ In your view controller after creating a HMTextView, for example called `hmTextV
 ### Protocols
 
 ```
+HMTextView Specific
 /// Returns all links in the text view
 func links(hashtags: [String], mentions: [String])
 /// Click event of a link
 func clicked(on link: String, type: HMType)
-/// Same with text view protocol
-func shouldBeginEditing(_ textView: UITextView)
-/// Same with text view protocol
-func didEndEditing(_ textView: UITextView)
-/// Same with text view protocol
-func didChange(_ textView: UITextView)
 /// When enter a'#' or '@'
 func readyToEnter(link_with type: HMType)
+/// When stopped entering a link
+func stoppedEntering(link_with type: HMType)
+/// When character limit reached
+func charLimitReached()
+/// If character limit will not be reached
+func charLimitAvailable()
+/// Chars written so far and remained char count
+func chars(_ written: Int, _ remained: Int)
+
+Common Methods
+/// Same with textViewShouldBeginEditing
+func shouldBeginEditing(_ textView: UITextView)
+/// Same with textViewDidEndEditing
+func didEndEditing(_ textView: UITextView)
+/// Same with textViewDidBeginEditing
+func didBeginEditing(_ textView: UITextView)
+/// Same with textViewDidChangeSelection
+func didChangeSelection(_ textView: UITextView)
+/// Same with textViewShouldEndEditing
+func shouldEndEditing(_ textView: UITextView)
+/// Same with textViewDidChange
+func didChange(_ textView: UITextView)
+/// Same with shouldChangeTextIn
+func shouldChangeTextIn(_ textView: UITextView,
+                        _ range: NSRange,
+                        _ replacementText: String,
+                        _ returning: Bool)
 ```
 
 ### Configuration
@@ -117,6 +139,9 @@ public var linkAttributes: [NSAttributedString.Key: Any]! {
         self.linkTextAttributes = self.linkAttributes
     }
 }
+
+/// Character count.
+public var charCount: Int = -1
 ```
 
 ## Resources Used: <br/>

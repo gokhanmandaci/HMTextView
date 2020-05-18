@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     private var hashtags = [String]()
     private var mentions = [String]()
     private var enableAddingMention: Bool = true
+    var predefinedLink: String?
+    var predefinedType: HMType?
     
     // MARK: - Outlets
     @IBOutlet weak var hmTextView: HMTextView!
@@ -31,7 +33,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func addOneNumberAction(_ sender: Any) {
-        let time = "3"
+        let time = "1"
         hmTextView.addLink(time, type: .hashtag, withReplacing: false)
     }
     
@@ -49,12 +51,13 @@ class ViewController: UIViewController {
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.tapped(_:)))
         view.addGestureRecognizer(tapGesture)
         
+        // HM TextView Configuration -- START
         hmTextView.lineSpacing = 15
         hmTextView.kern = -0.59
         hmTextView.charCount = 160
         hmTextView.allowLinksStartWithNumber = true
         hmTextView.minimumLinkCharCount = 1
-        
+        hmTextView.regex = "(?<=\\s|^)([@#][\\p{L}\\d]+[._:][\\p{L}\\d]+|[#@][\\p{L}\\d]*)(?=[']\\p{L}+|[.,;:?!](?:\\s|$)|\\s|$)"
         hmTextView.textAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.purple,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)
@@ -64,6 +67,11 @@ class ViewController: UIViewController {
         ]
         hmTextView.hashtagFont = UIFont.boldSystemFont(ofSize: 20)
         hmTextView.mentionFont = UIFont.boldSystemFont(ofSize: 12)
+        // -- END
+        
+        if let link = predefinedLink, let type = predefinedType {
+            hmTextView.addLink(link, type: type)
+        }
     }
     
     /// Tap gesture recognizer action. Closes keyboard.
@@ -73,12 +81,8 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: HMTextViewProtocol {
-    func clicked(on link: String, type: HMType) {
-        if type == .hashtag {
-            print("HMTextView clicked on: \(link) of type Hashtag")
-        } else {
-            print("HMTextView clicked on: \(link) of type Mention")
-        }
+    func didChange(_ textView: UITextView) {
+        print("HMTextView did change: \(textView.text ?? "")")
     }
     
     func links(hashtags: [String], mentions: [String]) {
@@ -90,6 +94,34 @@ extension ViewController: HMTextViewProtocol {
         
         print("Self Hashtags: \(self.hashtags)")
         print("Self Mentions: \(self.mentions)")
+    }
+    
+    func clicked(on link: String, type: HMType) {
+        if type == .hashtag {
+            print("HMTextView clicked on: \(link) of type Hashtag")
+        } else {
+            print("HMTextView clicked on: \(link) of type Mention")
+        }
+    }
+    
+    func shouldBeginEditing(_ textView: UITextView) {
+        print("HMTextView should begin editing: \(textView.text ?? "")")
+    }
+    
+    func didEndEditing(_ textView: UITextView) {
+        print("HMTextView did end editing: \(textView.text ?? "")")
+    }
+    
+    func didBeginEditing(_ textView: UITextView) {
+        print("HMTextView did begin editing: \(textView.text ?? "")")
+    }
+    
+    func didChangeSelection(_ textView: UITextView) {
+        print("HMTextView did change editing: \(textView.text ?? "")")
+    }
+    
+    func shouldEndEditing(_ textView: UITextView) {
+        print("HMTextView should end editing: \(textView.text ?? "")")
     }
     
     func readyToEnter(link_with type: HMType) {
@@ -108,6 +140,14 @@ extension ViewController: HMTextViewProtocol {
         }
     }
     
+    func charLimitReached() {
+        print("HMTextView char limit reached")
+    }
+    
+    func charLimitAvailable() {
+        print("HMTextView char limit available")
+    }
+    
     func chars(_ written: Int, _ remained: Int) {
         print(remained)
         print("******")
@@ -118,5 +158,9 @@ extension ViewController: HMTextViewProtocol {
         } else {
             enableAddingMention = true
         }
+    }
+    
+    func shouldChangeTextIn(_ textView: UITextView, _ range: NSRange, _ replacementText: String, _ returning: Bool) {
+        print("HMTextView should change text in: \(textView.text ?? "")\nwith range: \(range)\nwith replacement text:\(replacementText)\nreturning: \(returning)")
     }
 }

@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		761ADDA8247299D800E08F80 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761ADDA7247299D800E08F80 /* TableViewController.swift */; };
 		A490D2C8A0BF04C2B2A4DA74 /* Pods_HMTextView_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42900710C92AABB6BB2BF01 /* Pods_HMTextView_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		653F0AB0403C84124D5D6EF7 /* Pods-HMTextView_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HMTextView_Tests.release.xcconfig"; path = "Target Support Files/Pods-HMTextView_Tests/Pods-HMTextView_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		68853C46DB4BABA18D487337 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		761ADDA7247299D800E08F80 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		7A9D8A20BD11CC28E8DD61AD /* Pods_HMTextView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HMTextView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A261499CFD5544534EF43CCD /* Pods-HMTextView_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HMTextView_Tests.debug.xcconfig"; path = "Target Support Files/Pods-HMTextView_Tests/Pods-HMTextView_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		C42900710C92AABB6BB2BF01 /* Pods_HMTextView_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HMTextView_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
+				761ADDA7247299D800E08F80 /* TableViewController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -333,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				761ADDA8247299D800E08F80 /* TableViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

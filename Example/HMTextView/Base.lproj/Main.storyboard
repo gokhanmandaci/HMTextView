@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="00r-hw-Zve">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Link Viewer-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="HMTextView_Example" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="2rc-M0-TWx" customClass="HMTextView" customModule="HMTextView">
-                                <rect key="frame" x="36" y="40" width="303" height="150"/>
+                                <rect key="frame" x="36" y="84" width="303" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="Mgo-FB-nK6"/>
@@ -30,28 +30,28 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="twitter"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqz-3x-bDh">
-                                <rect key="frame" x="36" y="220" width="62" height="30"/>
+                                <rect key="frame" x="36" y="264" width="62" height="30"/>
                                 <state key="normal" title="#Gokhan"/>
                                 <connections>
                                     <action selector="gokhanAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ZW6-Gz-uQ0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfm-5B-IC1">
-                                <rect key="frame" x="36" y="296" width="35" height="30"/>
+                                <rect key="frame" x="36" y="340" width="35" height="30"/>
                                 <state key="normal" title="#123"/>
                                 <connections>
                                     <action selector="addMultipleNumbersAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="mXr-tb-OSr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d6y-yp-ihE">
-                                <rect key="frame" x="289" y="220" width="50" height="30"/>
+                                <rect key="frame" x="289" y="264" width="50" height="30"/>
                                 <state key="normal" title="@Cagri"/>
                                 <connections>
                                     <action selector="cagriAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="odJ-n7-ELq"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vgi-Ox-rAX">
-                                <rect key="frame" x="36" y="258" width="30" height="30"/>
+                                <rect key="frame" x="36" y="302" width="30" height="30"/>
                                 <state key="normal" title="#1"/>
                                 <connections>
                                     <action selector="addOneNumberAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="JPZ-Xj-Mpm"/>
@@ -73,11 +73,62 @@
                             <constraint firstItem="2rc-M0-TWx" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="40" id="qYa-VO-f9q"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Link Viewer" id="zQf-Ig-PDH"/>
                     <connections>
                         <outlet property="hmTextView" destination="2rc-M0-TWx" id="kAB-XC-aej"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1740" y="133"/>
+        </scene>
+        <!--Links-->
+        <scene sceneID="Sap-mQ-adg">
+            <objects>
+                <tableViewController id="P6J-a5-ajr" customClass="TableViewController" customModule="HMTextView_Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Bsn-Wb-GUZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="bhV-Vm-2jL">
+                                <rect key="frame" x="0.0" y="28" width="375" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bhV-Vm-2jL" id="st3-v7-a07">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="P6J-a5-ajr" id="UWT-BA-OVQ"/>
+                            <outlet property="delegate" destination="P6J-a5-ajr" id="mON-ne-ob1"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Links" id="aYc-2I-hPe"/>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="show" identifier="segueViewer" id="Hkz-Gg-IVN"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lpy-ld-Kfv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="935" y="133"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Lpv-14-05Z">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="00r-hw-Zve" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="EzA-sP-9Ov">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="P6J-a5-ajr" kind="relationship" relationship="rootViewController" id="qE9-TQ-lS7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aS6-9C-uSk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>
         </scene>
