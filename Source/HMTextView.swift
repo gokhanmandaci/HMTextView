@@ -34,6 +34,26 @@ public protocol HMTextViewProtocol {
 /// Delegate HMTextView protocol.
 public var hmTextViewDelegate: HMTextViewProtocol?
 
+public extension HMTextViewProtocol {
+    func links(hashtags: [String], mentions: [String]) {}
+    func clicked(on link: String, type: HMType) {}
+    func shouldBeginEditing(_ textView: UITextView) {}
+    func didEndEditing(_ textView: UITextView) {}
+    func didBeginEditing(_ textView: UITextView) {}
+    func didChangeSelection(_ textView: UITextView) {}
+    func shouldEndEditing(_ textView: UITextView) {}
+    func didChange(_ textView: UITextView) {}
+    func readyToEnter(link_with type: HMType) {}
+    func stoppedEntering(link_with type: HMType) {}
+    func charLimitReached() {}
+    func charLimitAvailable() {}
+    func chars(_ written: Int, _ remained: Int) {}
+    func shouldChangeTextIn(_ textView: UITextView,
+                            _ range: NSRange,
+                            _ replacementText: String,
+                            _ returning: Bool) {}
+}
+
 public enum HMType {
     case hashtag
     case mention
@@ -353,7 +373,7 @@ extension HMTextView: UITextViewDelegate {
     }
     
     public func textViewDidChangeSelection(_ textView: UITextView) {
-        hmTextViewDelegate?.didChange(textView)
+        hmTextViewDelegate?.didChangeSelection(textView)
     }
     
     public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
